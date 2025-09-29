@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "12121165611",
+    "project_id": "ppb2rena",
+    "storage_bucket": "ppb2rena.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12121165611:android:28db21d39e51ba4da2bf6e",
+        "android_client_info": {
+          "package_name": "com.example.ppb2_rena"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu_rY8sw5MyhF5Tf_k95UpiEHxABl6qDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
