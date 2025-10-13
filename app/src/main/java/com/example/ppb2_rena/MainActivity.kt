@@ -1,11 +1,11 @@
 package com.example.ppb2_rena
 
+import android.content.Intent
 import android.credentials.Credential
 import android.media.session.MediaSession.Token
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ppb2_rena.databinding.ActivityMainBinding
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,15 +40,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         credentialManager = CredentialManager.create(this)
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
 
         registerEvents()
     }
 
     fun registerEvents(){
-        binding.button.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             lifecycleScope.launch {
                 val request = prepareRequest()
                 loginByGoogle(request)
@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun prepareRequest(): GetCredentialRequest {
-        val serverClientid = "12121165611-9qakfej5quclskkdqfqkbmeba1l4ovnu.apps.googleusercontent.com"
+        val serverClientid =
+            "12121165611-9qakfej5quclskkdqfqkbmeba1l4ovnu.apps.googleusercontent.com"
 
         val googleOption = GetGoogleIdOption
             .Builder()
@@ -68,9 +69,9 @@ class MainActivity : AppCompatActivity() {
             .Builder()
             .addCredentialOption(googleOption)
             .build()
-
         return request
     }
+
     suspend fun loginByGoogle(request: GetCredentialRequest) {
         try {
             val result = credentialManager.getCredential(
@@ -96,9 +97,27 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) {task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, "Login berhasil", Toast.LENGTH_LONG).show()
+                toTodoPage()
             } else {
                 Toast.makeText(this, "Login gagal", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    fun isAuthenticated(): Boolean {
+        return auth.currentUser != null
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isAuthenticated()) {
+            toTodoPage()
+        }
+    }
+
+    private fun toTodoPage() {
+        val intent = Intent(this, TaxtActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
