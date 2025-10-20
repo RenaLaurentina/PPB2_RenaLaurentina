@@ -1,5 +1,7 @@
 package com.example.ppb2_rena
 
+import android.content.Intent
+import android.icu.text.Edits
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ppb2_rena.adapter.TodoAdapter
 import com.example.ppb2_rena.databinding.ActivityTaxtBinding
+import com.example.ppb2_rena.entity.Todo
 import com.example.ppb2_rena.usecase.TodoUsecase
 import kotlinx.coroutines.launch
 
@@ -36,29 +39,40 @@ class TaxtActivity : AppCompatActivity() {
 
         setupRecyclerView()
         initializeData()
+        registerEvents()
     }
 
-    private fun setupRecyclerView() {
-        todoAdapter = TodoAdapter(mutableListOf())
-        activityBinding.container.layoutManager = LinearLayoutManager(this)
+    fun registerEvents() {
+        activityBinding.tombolTambah.setOnClickListener {
+            toCreateTodoPage()
+        }
+    }
+
+    fun setupRecyclerView() {
+        todoAdapter = TodoAdapter(mutableListOf(), object : TodoAdapter.TodoItemEvents {
+            override fun onDelete(todo: Todo) {}
+        })
+
         activityBinding.container.adapter = todoAdapter
+        activityBinding.container.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun initializeData() {
+    fun initializeData() {
         activityBinding.container.visibility = View.GONE
         activityBinding.loading.visibility = View.VISIBLE
 
         lifecycleScope.launch {
-            try {
-                val data = todoUsecase.getTodo()
-                Log.d("info app", data.toString())
-                activityBinding.container.visibility = View.VISIBLE
-                activityBinding.loading.visibility = View.GONE
-                todoAdapter.updateData(data)
-            } catch (e: Exception) {
-                activityBinding.loading.visibility = View.GONE
-                e.printStackTrace()
-            }
+            val data = todoUsecase.getTodo()
+            activityBinding.container.visibility = View.VISIBLE
+            activityBinding.loading.visibility = View.GONE
+            todoAdapter.updateData(data)
         }
     }
-}
+
+        fun toCreateTodoPage() {
+            val intent = Intent(this,CreateTodoActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+

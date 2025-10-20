@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"
-        tools:itemCount="4"
+        tools:itemCount="2"
         tools:listitem="@layout/item_todo"
         />
 
@@ -30,8 +30,8 @@
         android:layout_height="60dp"
         android:contentDescription="Navigate to create Todo"
         android:layout_margin="20dp"
-        android:src="@color/black"
         android:layout_alignParentEnd="true"
+        android:src="@color/black"
         android:layout_alignParentBottom="true"
         />
 

@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PPB2_rena"
         tools:targetApi="31">
+
+        <activity
+            android:name=".CreateTodoActivity"
+            android:exported="false"/>
         <activity
             android:name=".TaxtActivity"
             android:exported="false" />
@@ -20,7 +24,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

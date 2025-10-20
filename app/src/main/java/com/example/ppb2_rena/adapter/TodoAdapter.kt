@@ -4,20 +4,23 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.ppb2_rena.databinding.ItemTodoBinding
 import com.example.ppb2_rena.entity.Todo
 
 class TodoAdapter (
-    private  val dataset: MutableList<Todo>
+    private val dataset: MutableList<Todo>,
+    private val events: TodoItemEvents
 ) : RecyclerView.Adapter<TodoAdapter.CustomViewHolder>() {
+
+    interface TodoItemEvents {
+        fun onDelete(todo: Todo)
+    }
 
     inner class CustomViewHolder(
         val view: ItemTodoBinding)
         : RecyclerView.ViewHolder(view.root) {
-
             fun bindData(item: Todo) {
-                view.title.text = item.title
+                view.judul.text = item.title
                 view.description.text = item.description
             }
         }

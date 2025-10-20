@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var activityBinding: ActivityMainBinding
     private lateinit var credentialManager: CredentialManager
     private lateinit var auth: FirebaseAuth
 
@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        activityBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityBinding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun registerEvents(){
-        binding.btnLogin.setOnClickListener {
+        activityBinding.btnLogin.setOnClickListener {
             lifecycleScope.launch {
                 val request = prepareRequest()
                 loginByGoogle(request)

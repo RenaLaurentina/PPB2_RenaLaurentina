@@ -3,26 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:background="#715A5A"
-    android:layout_marginTop="10dp"
+    android:background="@color/cardview_light_background"
     android:layout_marginBottom="10dp"
+    android:padding="10dp"
     >
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/judul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="mancing di dermaga"
+        android:text="Judul todo"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/title"
-        android:text="pergi bersama teman-teman"
+        android:text="metode transformatif yang mnerapkan fungsi"
+        android:layout_below="@id/judul"
         />
 
 </RelativeLayout>

@@ -2,28 +2,45 @@ package com.example.ppb2_rena.usecase
 
 import com.example.ppb2_rena.entity.Todo
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
 class TodoUsecase {
-    val db = Firebase.firestore
+    private val db : FirebaseFirestore = Firebase.firestore
 
     suspend fun getTodo(): List<Todo> {
-        return try {
-            val snapshot = db.collection("todo")
-                .get()
+        val data = db.collection("todo")
+            .get()
+            .await()
+
+        if (data.isEmpty) {
+            throw Exception("Data di server kosong")
+        }
+
+        return data.documents.map {
+            Todo(
+                id = it.id,
+                title = it.get("title").toString(),
+                description = it.get("deskription").toString()
+            )
+        }
+    }
+
+    suspend fun createTodo(todo: Todo): Todo {
+        try {
+            val payload = hashMapOf(
+                "title" to todo.title,
+                "deskription" to todo.description
+            )
+
+            val data = db.collection("todo")
+                .add(payload)
                 .await()
 
-            snapshot.documents.map { document ->
-                Todo(
-                    id = document.id,
-                    title = document.getString("title") ?: "",
-                    description = document.getString("description") ?: ""
-                )
-            }
+            return todo.copy(id = data.id)
         } catch (exc: Exception) {
-
-            throw Exception("Gagal mengambil data todo: ${exc.message}")
+            throw  Exception("Gagal menyimpan data ke firestore")
         }
     }
 }
