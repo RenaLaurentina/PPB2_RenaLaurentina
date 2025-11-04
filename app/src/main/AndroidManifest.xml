@@ -13,6 +13,15 @@
         android:theme="@style/Theme.PPB2_rena"
         tools:targetApi="31">
         <activity
+            android:name=".EditTodoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateTodoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TaxtActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
