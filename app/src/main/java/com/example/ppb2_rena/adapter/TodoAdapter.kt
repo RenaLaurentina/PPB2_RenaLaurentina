@@ -9,19 +9,33 @@ import com.example.ppb2_rena.entity.Todo
 
 class TodoAdapter (
     private val dataset: MutableList<Todo>,
-    private val events: TodoItemEvents
+    private val todoItemEvents: TodoAdapter.TodoItemEvents
 ) : RecyclerView.Adapter<TodoAdapter.CustomViewHolder>() {
 
     interface TodoItemEvents {
-        fun onDelete(todo: Todo)
+        fun onTodoItemEdit(todo: Todo):Unit
+        fun onTodoItemDelete(todo: Todo):Unit
     }
 
     inner class CustomViewHolder(
-        val view: ItemTodoBinding)
-        : RecyclerView.ViewHolder(view.root) {
-            fun bindData(item: Todo) {
-                view.judul.text = item.title
-                view.description.text = item.description
+        val view: ItemTodoBinding
+        ): RecyclerView.ViewHolder(view.root) {
+
+            fun bindData(data: Todo) {
+                view.judul.text = data.title
+                view.description.text = data.description
+
+                // eh kotlin berikan saya notofikaasi ketika element root (RelativeLayout) itu di click
+                view.root.setOnClickListener {
+                    // kode disini adalah aksi kita setelah mendpat nontifikasi sebuah element di click
+                    todoItemEvents.onTodoItemEdit(data)
+                }
+
+                // eh kotlin berikan saya notofikaasi ketika element root (RelativeLayout) itu di click dan ditahan sekian detik
+                view.root.setOnClickListener {
+                    todoItemEvents.onTodoItemDelete(data)
+                    true
+                }
             }
         }
 

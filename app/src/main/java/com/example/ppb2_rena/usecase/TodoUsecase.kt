@@ -27,6 +27,48 @@ class TodoUsecase {
         }
     }
 
+    suspend fun getTodo(id: String): Todo? {
+        val data = db.collection("todo")
+            .document(id)
+            .get()
+            .await()
+
+        if (!data.exists()) return null
+
+        return Todo(
+            id = data.id,
+            title = data.get("title").toString(),
+            description = data.get("description").toString()
+        )
+    }
+
+    suspend fun deleteTodo(id: String) {
+        try {
+            db.collection("todo")
+                .document(id)
+                .delete()
+                .await()
+        } catch (exc: Exception) {
+            throw Exception("Gagal menghapus data : ${exc.message}")
+        }
+    }
+
+    suspend fun updateTodo(todo: Todo) {
+        try {
+                val payload = hashMapOf(
+                    "title" to todo.title,
+                    "deskription" to todo.description
+                )
+
+            db.collection("todo")
+                .document(todo.id)
+                .set(payload)
+                .await()
+        } catch (exc: Exception) {
+            throw Exception("Gagal menghapus data : ${exc.message}")
+        }
+    }
+
     suspend fun createTodo(todo: Todo): Todo {
         try {
             val payload = hashMapOf(
